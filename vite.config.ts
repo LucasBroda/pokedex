@@ -16,10 +16,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@layout': resolve(__dirname, './src/layout'),
-      '@services': resolve(__dirname, './src/services'),
-      '@components': resolve(__dirname, './src/components'),
-      '@pages': resolve(__dirname, './src/pages'),
+      '@layout': resolve(__dirname, './src/app/layout'),
+      '@services': resolve(__dirname, './src/app/services'),
+      '@components': resolve(__dirname, './src/app/components'),
+      '@pages': resolve(__dirname, './src/app/pages'),
     }
   },
 } as UserConfig)
