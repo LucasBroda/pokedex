@@ -12,6 +12,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "next": "15.3.3",
+    "psql": "^0.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "@tanstack/react-query": "^5.80.2",
     "@tanstack/react-query-devtools": "^5.80.2",
     "bootstrap": "^5.3.7",
