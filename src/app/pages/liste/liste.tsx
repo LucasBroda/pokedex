@@ -4,14 +4,20 @@ import styles from "./liste.module.css";
 function Liste() {
   const [pokemons, setPokemons] = useState<Array<{ id: number; name_french: string; hires: string; types: string[] }>>([]);
   const [limit, setLimit] = useState(10); // Par défaut, afficher 10 Pokémon
+  const [filterName, setFilterName] = useState(""); // Filtre par nom
+  const [filterType, setFilterType] = useState(""); // Filtre par type
 
   useEffect(() => {
     fetchPokemons();
-  }, [limit]);
+  }, [limit, filterName, filterType]);
 
   const fetchPokemons = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/pokemons/list?limit=${limit}`);
+      let url = `http://localhost:3001/api/pokemons/list?limit=${limit}`;
+      if (filterName) url += `&name=${filterName}`;
+      if (filterType) url += `&type=${filterType}`;
+
+      const response = await fetch(url);
       const data = await response.json();
       setPokemons(data.map((pokemon: any) => ({
         id: pokemon.id,
@@ -40,6 +46,18 @@ function Liste() {
           <option value={100}>100</option>
           <option value={809}>Tous</option>
         </select>
+        <input
+          type="text"
+          placeholder="Filtrer par nom"
+          value={filterName}
+          onChange={(e) => setFilterName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Filtrer par type"
+          value={filterType}
+          onChange={(e) => setFilterType(e.target.value)}
+        />
       </div>
       <div className={styles.cards}>
         {pokemons.map((pokemon) => (
