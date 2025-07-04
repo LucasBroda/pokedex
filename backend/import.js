@@ -9,7 +9,7 @@ const connection = mysql.createPool({
 });
 
 async function importData() {
-  const data = JSON.parse(fs.readFileSync('./pokemon-data.json', 'utf8'));
+  const data = JSON.parse(fs.readFileSync('./pokedex.json', 'utf8'));
 
   for (const pokemon of data) {
     const { id, name, hp, attack, defense, sp_attack, sp_defense, speed, type } = pokemon;
