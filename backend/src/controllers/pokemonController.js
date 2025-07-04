@@ -34,12 +34,12 @@ const getPokemonById = async (req, res) => {
 };
 
 const addPokemon = async (req, res) => {
-  const { id, name_english, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires } = req.body;
+  const { id, name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires } = req.body;
 
   await connection.query(
     `INSERT INTO pokemon (id, name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [id, name_english, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires]
+    [id, name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires]
   );
 
   res.status(201).json({ message: 'Pokémon bien ajouté' });
@@ -47,12 +47,12 @@ const addPokemon = async (req, res) => {
 
 const updatePokemon = async (req, res) => {
   const { id } = req.params;
-  const { name_english, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires } = req.body;
+  const { name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires } = req.body;
 
   await connection.query(
     `UPDATE pokemon SET name_french = ?, hp = ?, attack = ?, defense = ?, sp_attack = ?, sp_defense = ?, speed = ?, species = ?, description = ?, height = ?, weight = ?, gender = ?, sprite = ?, thumbnail = ?, hires = ?
     WHERE id = ?`,
-    [name_english, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires, id]
+    [name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires, id]
   );
 
   res.json({ message: 'Pokémon bien ajouté' });
