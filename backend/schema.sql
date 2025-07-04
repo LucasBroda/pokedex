@@ -3,26 +3,28 @@ DROP TABLE IF EXISTS type;
 DROP TABLE IF EXISTS pokemon;
 
 CREATE TABLE pokemon (
-  id INTEGER PRIMARY KEY,
-  name_english TEXT,
-  name_japanese TEXT,
-  name_chinese TEXT,
-  name_french TEXT,
-  hp INTEGER,
-  attack INTEGER,
-  defense INTEGER,
-  sp_attack INTEGER,
-  sp_defense INTEGER,
-  speed INTEGER
+  id INT PRIMARY KEY,
+  name_english VARCHAR(255),
+  name_japanese VARCHAR(255),
+  name_chinese VARCHAR(255),
+  name_french VARCHAR(255),
+  hp INT,
+  attack INT,
+  defense INT,
+  sp_attack INT,
+  sp_defense INT,
+  speed INT
 );
 
 CREATE TABLE type (
-  id SERIAL PRIMARY KEY,
-  name TEXT UNIQUE
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE pokemon_type (
-  pokemon_id INTEGER REFERENCES pokemon(id),
-  type_id INTEGER REFERENCES type(id),
-  PRIMARY KEY (pokemon_id, type_id)
+  pokemon_id INT,
+  type_id INT,
+  PRIMARY KEY (pokemon_id, type_id),
+  FOREIGN KEY (pokemon_id) REFERENCES pokemon(id),
+  FOREIGN KEY (type_id) REFERENCES type(id)
 );
