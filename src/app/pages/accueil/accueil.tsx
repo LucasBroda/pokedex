@@ -12,7 +12,9 @@ function Accueil() {
       <section className={styles.hero}>
         <h2>Votre compagnon ultime pour les Pokémon</h2>
         <p>Découvrez les statistiques, les évolutions, et bien plus encore !</p>
-        <button className={styles.ctaButton}>Commencer</button>
+        <Link to="/liste">
+          <button className={styles.ctaButton}>Voir la liste des Pokémon</button>
+        </Link>
         <Link to="/ajout">
           <button className={styles.ctaButton}>Ajouter un Pokémon</button>
         </Link>
