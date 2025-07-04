@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./ajout.module.css";
 
 function Ajout() {
@@ -18,6 +19,8 @@ function Ajout() {
     weight: "",
     hires: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -72,8 +75,9 @@ function Ajout() {
           description: "",
           height: "",
           weight: "",
-          hires: ""
+          hires: "",
         });
+        navigate("/"); // Rediriger vers la page d'accueil
       } else {
         alert("Erreur lors de l'ajout du Pokémon.");
       }

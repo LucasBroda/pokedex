@@ -51,28 +51,40 @@ const addPokemon = async (req, res) => {
     hires,
   } = req.body;
 
-  await connection.query(
-    `INSERT INTO pokemon (id, name_french, types, abilities, hp, attack, defense, sp_attack, sp_defense, speed, description, height, weight, hires)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-      id,
-      name_french,
-      types,
-      abilities,
-      hp,
-      attack,
-      defense,
-      sp_attack,
-      sp_defense,
-      speed,
-      description,
-      height,
-      weight,
-      hires,
-    ]
-  );
+  try {
+    // Vérifier si le Pokémon existe déjà par son nom
+    const [existingPokemon] = await connection.query('SELECT * FROM pokemon WHERE name_french = ?', [name_french]);
+    if (existingPokemon.length > 0) {
+      return res.status(400).json({ message: `Un Pokémon avec le nom "${name_french}" existe déjà.` });
+    }
 
-  res.status(201).json({ message: 'Pokémon bien ajouté' });
+    // Ajouter le Pokémon
+    await connection.query(
+      `INSERT INTO pokemon (id, name_french, types, abilities, hp, attack, defense, sp_attack, sp_defense, speed, description, height, weight, hires)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id,
+        name_french,
+        types,
+        abilities,
+        hp,
+        attack,
+        defense,
+        sp_attack,
+        sp_defense,
+        speed,
+        description,
+        height,
+        weight,
+        hires,
+      ]
+    );
+
+    res.status(201).json({ message: 'Pokémon bien ajouté' });
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du Pokémon :', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
 };
 
 const updatePokemon = async (req, res) => {
