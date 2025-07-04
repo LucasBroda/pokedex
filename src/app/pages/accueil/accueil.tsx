@@ -1,4 +1,6 @@
 import styles from "./accueil.module.css";
+import { Link } from "react-router-dom";
+
 
 function Accueil() {
   return (
@@ -11,6 +13,9 @@ function Accueil() {
         <h2>Votre compagnon ultime pour les Pokémon</h2>
         <p>Découvrez les statistiques, les évolutions, et bien plus encore !</p>
         <button className={styles.ctaButton}>Commencer</button>
+        <Link to="/ajout">
+          <button className={styles.ctaButton}>Ajouter un Pokémon</button>
+        </Link>
       </section>
       <section className={styles.features}>
         <h2>Fonctionnalités</h2>
