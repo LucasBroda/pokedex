@@ -8,6 +8,7 @@ DB_PASSWORD="password123"
 SCHEMA_FILE="schema.sql"
 AUTH_SCHEMA_FILE="auth_schema.sql"
 DATA_IMPORT_SCRIPT="import.js"
+DATA_USER_SCRIPT="create_user.js"
 
 # Création de la base de données et de l'utilisateur
 mysql -u root -p -e "
@@ -26,5 +27,8 @@ mysql -u ${DB_USER} -p${DB_PASSWORD} ${DB_NAME} < ${AUTH_SCHEMA_FILE}
 
 # Exécution du script d'importation des données
 node ${DATA_IMPORT_SCRIPT}
+
+# Exécution du script de création de l'utilisateur
+node ${DATA_USER_SCRIPT}
 
 echo "Base de données configurée avec succès."
