@@ -14,6 +14,9 @@ export default defineConfig({
     environment: 'jsdom',           // Environnement de test simulant un navigateur
     setupFiles: './src/app/test/setup.js', // Script de configuration avant les tests
     globals: true,                  // Permet l'utilisation des variables globales pour les tests
+    coverage: {
+      reporter: ["text", "html"],
+    }
   },
   resolve: {
     alias: {                       // Alias pour simplifier les imports dans le projet
