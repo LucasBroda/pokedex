@@ -115,8 +115,12 @@ function PokemonModal({ pokemon, onClose, onUpdate, onAddFavorite }: ModalProps)
 
 // Composant principal de la liste de Pokémon
 function Liste() {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [limit, setLimit] = useState(10);
+  const [pokemons, setPokemons] = useState<Array<{ id: number; name_french: string; hires: string; types: string[] }>>([]);
+  const [filteredPokemons, setFilteredPokemons] = useState<Array<{ id: number; name_french: string; hires: string; types: string[] }>>([]);
+  const [limit, setLimit] = useState(10); // Par défaut, afficher 10 Pokémon
+  const [filterName, setFilterName] = useState(""); // Filtre par nom
+  const [filterType, setFilterType] = useState(""); // Filtre par type
+
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
 
   // Récupération des favoris depuis localStorage
@@ -127,12 +131,16 @@ function Liste() {
 
   useEffect(() => {
     fetchPokemons();
-  }, [limit]);
+  }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [limit, filterName, filterType, pokemons]);
 
   // Récupère les Pokémon depuis l’API
   const fetchPokemons = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/pokemons/list?limit=${limit}`);
+      const response = await fetch(`http://localhost:3001/api/pokemons/list`);
       const data = await response.json();
       setPokemons(
         data.map((pokemon: any) => ({
@@ -147,6 +155,25 @@ function Liste() {
     }
   };
 
+  const applyFilters = () => {
+    let filtered = [...pokemons];
+
+    // Appliquer la limite avant les filtres
+    filtered = filtered.slice(0, limit);
+
+    if (filterName) {
+      filtered = filtered.filter((pokemon) =>
+        pokemon.name_french.toLowerCase().includes(filterName.toLowerCase())
+      );
+    }
+
+    if (filterType) {
+      filtered = filtered.filter((pokemon) =>
+        pokemon.types.some((type) => type.toLowerCase() === filterType.toLowerCase())
+      );
+    }
+
+    setFilteredPokemons(filtered);
   // Met à jour un Pokémon dans la liste après édition
   const handleUpdate = (updatedPokemon: Pokemon) => {
     setPokemons((prev) =>
@@ -164,6 +191,7 @@ function Liste() {
     } else {
       alert(`${pokemon.name_french} est déjà dans les favoris.`);
     }
+
   };
 
   return (
@@ -184,10 +212,25 @@ function Liste() {
           <option value={100}>100</option>
           <option value={809}>Tous</option>
         </select>
+        <input
+          type="text"
+          placeholder="Filtrer par nom"
+          value={filterName}
+          onChange={(e) => setFilterName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Filtrer par type"
+          value={filterType}
+          onChange={(e) => setFilterType(e.target.value)}
+        />
       </div>
 
       {/* Affichage des cartes Pokémon */}
       <div className={styles.cards}>
+        {filteredPokemons.map((pokemon) => (
+          <div key={pokemon.id} className={styles.card}>
+
         {pokemons.map((pokemon) => (
           <div
             key={pokemon.id}
