@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ajout.module.css";
 
+// Composant Ajout pour ajouter un nouveau Pokémon
 function Ajout() {
+  // État local pour stocker les données du formulaire
   const [formData, setFormData] = useState({
     id: "",
     name_french: "",
@@ -20,17 +22,19 @@ function Ajout() {
     hires: "",
   });
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Pour naviguer vers une autre page après soumission
 
+  // Gère les changements dans les champs du formulaire
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value }); // Met à jour le champ modifié
   };
 
+  // Gère la soumission du formulaire
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation des champs numériques
+    // Vérifie que certains champs sont bien des nombres
     const numericFields = ["hp", "attack", "defense", "sp_attack", "sp_defense", "speed"];
     for (const field of numericFields) {
       if (isNaN(Number(formData[field]))) {
@@ -40,17 +44,17 @@ function Ajout() {
     }
 
     try {
-      // Récupérer le dernier ID de la base de données
+      // Récupère le dernier ID existant depuis l’API
       const lastIdResponse = await fetch("http://localhost:3001/api/pokemons/last-id");
       if (lastIdResponse.ok) {
         const { lastId } = await lastIdResponse.json();
-        formData.id = (lastId + 1).toString(); // Incrémenter l'ID
+        formData.id = (lastId + 1).toString(); // Incrémente l'ID pour le nouveau Pokémon
       } else {
         alert("Erreur lors de la récupération du dernier ID.");
         return;
       }
 
-      // Ajout du Pokémon
+      // Envoie les données à l’API pour ajouter un nouveau Pokémon
       const response = await fetch("http://localhost:3001/api/pokemons/add", {
         method: "POST",
         headers: {
@@ -59,6 +63,7 @@ function Ajout() {
         body: JSON.stringify(formData),
       });
 
+      // Si la réponse est positive, réinitialise le formulaire et redirige
       if (response.ok) {
         alert("Pokémon ajouté avec succès !");
         setFormData({
@@ -77,7 +82,7 @@ function Ajout() {
           weight: "",
           hires: "",
         });
-        navigate("/"); // Rediriger vers la page d'accueil
+        navigate("/"); // Redirection vers la page d'accueil
       } else {
         alert("Erreur lors de l'ajout du Pokémon.");
       }
@@ -91,6 +96,7 @@ function Ajout() {
     <div className={styles.container}>
       <h1>Ajouter un Pokémon</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
+        {/* Champ pour le nom français */}
         <input
           type="text"
           name="name_french"
@@ -99,6 +105,7 @@ function Ajout() {
           onChange={handleChange}
           required
         />
+        {/* Champ pour les types */}
         <input
           type="text"
           name="types"
@@ -107,6 +114,7 @@ function Ajout() {
           onChange={handleChange}
           required
         />
+        {/* Champ pour les capacités */}
         <input
           type="text"
           name="abilities"
@@ -114,6 +122,7 @@ function Ajout() {
           value={formData.abilities}
           onChange={handleChange}
         />
+        {/* Statistiques de base */}
         <input
           type="text"
           name="hp"
@@ -162,6 +171,7 @@ function Ajout() {
           onChange={handleChange}
           required
         />
+        {/* Description */}
         <textarea
           name="description"
           placeholder="Description"
@@ -169,6 +179,7 @@ function Ajout() {
           onChange={handleChange}
           required
         ></textarea>
+        {/* Taille et poids */}
         <input
           type="text"
           name="height"
@@ -185,6 +196,7 @@ function Ajout() {
           onChange={handleChange}
           required
         />
+        {/* Lien vers l’image */}
         <input
           type="text"
           name="hires"
@@ -192,6 +204,7 @@ function Ajout() {
           value={formData.hires}
           onChange={handleChange}
         />
+        {/* Bouton de soumission */}
         <button type="submit">Ajouter</button>
       </form>
     </div>
