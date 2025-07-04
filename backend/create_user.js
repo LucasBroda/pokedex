@@ -11,7 +11,7 @@ const connection = mysql.createPool({
 
 async function createAdminUser(email, password) {
   try {
-    // Hacher le mot de passe
+    
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Vérifier si l'utilisateur existe déjà

@@ -3,19 +3,20 @@ import react from '@vitejs/plugin-react'
 import { fileURLToPath } from 'url'
 import { dirname, resolve } from 'path'
 
+// Obtient le chemin absolu du fichier courant et son dossier
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// https://vite.dev/config/
+// Configuration Vite
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react()], // Plugin React pour Vite
   test: {
-    environment: 'jsdom',
-    setupFiles: './src/app/test/setup.js',
-    globals: true,
+    environment: 'jsdom',           // Environnement de test simulant un navigateur
+    setupFiles: './src/app/test/setup.js', // Script de configuration avant les tests
+    globals: true,                  // Permet l'utilisation des variables globales pour les tests
   },
   resolve: {
-    alias: {
+    alias: {                       // Alias pour simplifier les imports dans le projet
       '@layout': resolve(__dirname, './src/app/layout'),
       '@services': resolve(__dirname, './src/app/services'),
       '@components': resolve(__dirname, './src/app/components'),
