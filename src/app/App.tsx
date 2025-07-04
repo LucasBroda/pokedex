@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router";
-import Accueil from "./pages/accueil";
+import Accueil from "@pages";
 
 function App() {
   return (
