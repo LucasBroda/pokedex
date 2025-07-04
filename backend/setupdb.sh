@@ -6,6 +6,7 @@ DB_NAME="pokedex"
 DB_USER="pokedex_user"
 DB_PASSWORD="password123"
 SCHEMA_FILE="schema.sql"
+AUTH_SCHEMA_FILE="auth_schema.sql"
 DATA_IMPORT_SCRIPT="import.js"
 
 # Création de la base de données et de l'utilisateur
@@ -19,6 +20,9 @@ FLUSH PRIVILEGES;
 
 # Importation du fichier schema.sql
 mysql -u ${DB_USER} -p${DB_PASSWORD} ${DB_NAME} < ${SCHEMA_FILE}
+
+# Importation du fichier auth_schema.sql
+mysql -u ${DB_USER} -p${DB_PASSWORD} ${DB_NAME} < ${AUTH_SCHEMA_FILE}
 
 # Exécution du script d'importation des données
 node ${DATA_IMPORT_SCRIPT}
