@@ -6,7 +6,7 @@ function Navbar() {
     <nav className={styles.navbar}>
       <ul className={styles.navLinks}>
         <li>
-          <Link to="/" className={styles.link}>Accueil</Link>
+          <Link to="/" className={styles.link}>Accueil du Pokedex</Link>
         </li>
         <li>
           <Link to="/liste" className={styles.link}>Liste des Pokémon</Link>
