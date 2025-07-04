@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router";
-import Accueil from "@pages";
+import {Accueil, Ajout } from "@pages";
 
 function App() {
   return (
     <Routes>
-      <Route path='/' element={<Accueil />}>
-      </Route>
+      <Route path='/' element={<Accueil />} />
+      <Route path='/ajout' element={<Ajout />} />
     </Routes>
 
   )
