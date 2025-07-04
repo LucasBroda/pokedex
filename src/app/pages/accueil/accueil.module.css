@@ -1,20 +1,105 @@
 .container {
-    padding: 20px;
-    background-color: #f4f4f9;
-  }
-  
-  .header {
-    text-align: center;
-    background-color: #4CAF50;
-    color: white;
-    padding: 20px;
-  }
-  
-  .features ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .team {
-    margin-top: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #d32f2f; /* Rouge vif, couleur principale du Pokédex */
+  color: #fff; /* Texte blanc pour contraste */
+  font-family: 'Roboto', sans-serif;
+  overflow-x: hidden; /* Empêche le scroll horizontal */
+  margin: 0;
+}
+
+.header {
+  text-align: center;
+  padding: 20px;
+  background-color: #c62828; /* Rouge foncé */
+  color: white;
+  width: 100%;
+  border-bottom: 5px solid #fbc02d; /* Ligne jaune pour le style Pokédex */
+}
+
+.hero {
+  text-align: center;
+  padding: 50px;
+  background: url('hero-image.jpg') no-repeat center center/cover;
+  color: white;
+  width: 100%;
+  border: 5px solid #fbc02d; /* Bordure jaune pour le style Pokédex */
+  border-radius: 10px;
+}
+
+.ctaButton {
+  padding: 15px 30px;
+  font-size: 18px;
+  background-color: #1976d2; /* Bleu vif */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.features {
+  padding: 20px;
+  margin: 20px;
+  background-color: #e53935; /* Rouge clair */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  border: 3px solid #fbc02d; /* Bordure jaune */
+}
+
+.features h2 {
+  text-align: center;
+  color: #fff; /* Texte blanc */
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.features ul li {
+  padding: 10px;
+  font-size: 18px;
+  border-bottom: 1px solid #fbc02d; /* Ligne jaune */
+}
+
+.team {
+  padding: 20px;
+  margin: 20px;
+  background-color: #e53935; /* Rouge clair */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  border: 3px solid #fbc02d; /* Bordure jaune */
+}
+
+.team h2 {
+  text-align: center;
+  color: #fff; /* Texte blanc */
+}
+
+.team .members {
+  display: flex; /* Affiche les membres à l'horizontal */
+  justify-content: center; /* Centre les membres horizontalement */
+  gap: 20px; /* Ajoute un espace entre les membres */
+}
+
+.member {
+  text-align: center;
+  margin: 10px;
+  flex: 1; /* Permet aux membres de prendre une largeur égale */
+}
+
+.footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #c62828; /* Rouge foncé */
+  color: white;
+  width: 100%;
+  border-top: 5px solid #fbc02d; /* Ligne jaune pour le style Pokédex */
+}

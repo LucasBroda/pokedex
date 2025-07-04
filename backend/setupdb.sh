@@ -25,10 +25,7 @@ mysql -u ${DB_USER} -p${DB_PASSWORD} ${DB_NAME} < ${SCHEMA_FILE}
 # Importation du fichier auth_schema.sql
 mysql -u ${DB_USER} -p${DB_PASSWORD} ${DB_NAME} < ${AUTH_SCHEMA_FILE}
 
-# Exécution du script d'importation des données
+# Exécution du script d'importation des données et de création de l'utilisateur
 node ${DATA_IMPORT_SCRIPT}
-
-# Exécution du script de création de l'utilisateur
-node ${DATA_USER_SCRIPT}
 
 echo "Base de données configurée avec succès."

@@ -13,7 +13,7 @@ const getPokemons = async (req, res) => {
   }
 
   if (type) {
-    query += ' AND id IN (SELECT pokemon_id FROM pokemon_type WHERE type_id IN (SELECT id FROM type WHERE name = ?))';
+    query += ' AND FIND_IN_SET(?, types)';
     params.push(type);
   }
 
@@ -34,34 +34,115 @@ const getPokemonById = async (req, res) => {
 };
 
 const addPokemon = async (req, res) => {
-  const { id, name_english, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires } = req.body;
+  const {
+    id,
+    name_french,
+    types,
+    abilities,
+    hp,
+    attack,
+    defense,
+    sp_attack,
+    sp_defense,
+    speed,
+    description,
+    height,
+    weight,
+    hires,
+  } = req.body;
 
-  await connection.query(
-    `INSERT INTO pokemon (id, name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [id, name_english, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires]
-  );
+  try {
+    // Vérifier si le Pokémon existe déjà par son nom
+    const [existingPokemon] = await connection.query('SELECT * FROM pokemon WHERE name_french = ?', [name_french]);
+    if (existingPokemon.length > 0) {
+      return res.status(400).json({ message: `Un Pokémon avec le nom "${name_french}" existe déjà.` });
+    }
 
-  res.status(201).json({ message: 'Pokémon bien ajouté' });
+    // Ajouter le Pokémon
+    await connection.query(
+      `INSERT INTO pokemon (id, name_french, types, abilities, hp, attack, defense, sp_attack, sp_defense, speed, description, height, weight, hires)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id,
+        name_french,
+        types,
+        abilities,
+        hp,
+        attack,
+        defense,
+        sp_attack,
+        sp_defense,
+        speed,
+        description,
+        height,
+        weight,
+        hires,
+      ]
+    );
+
+    res.status(201).json({ message: 'Pokémon bien ajouté' });
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du Pokémon :', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
 };
 
 const updatePokemon = async (req, res) => {
   const { id } = req.params;
-  const { name_english, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires } = req.body;
+  const {
+    name_french,
+    types,
+    abilities,
+    hp,
+    attack,
+    defense,
+    sp_attack,
+    sp_defense,
+    speed,
+    description,
+    height,
+    weight,
+    hires,
+  } = req.body;
 
   await connection.query(
-    `UPDATE pokemon SET name_french = ?, hp = ?, attack = ?, defense = ?, sp_attack = ?, sp_defense = ?, speed = ?, species = ?, description = ?, height = ?, weight = ?, gender = ?, sprite = ?, thumbnail = ?, hires = ?
+    `UPDATE pokemon SET name_french = ?, types = ?, abilities = ?, hp = ?, attack = ?, defense = ?, sp_attack = ?, sp_defense = ?, speed = ?, description = ?, height = ?, weight = ?, hires = ?
     WHERE id = ?`,
-    [name_english, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires, id]
+    [
+      name_french,
+      types,
+      abilities,
+      hp,
+      attack,
+      defense,
+      sp_attack,
+      sp_defense,
+      speed,
+      description,
+      height,
+      weight,
+      hires,
+      id,
+    ]
   );
 
-  res.json({ message: 'Pokémon bien ajouté' });
+  res.json({ message: 'Pokémon mis à jour avec succès' });
 };
 
 const deletePokemon = async (req, res) => {
   const { id } = req.params;
   await connection.query('DELETE FROM pokemon WHERE id = ?', [id]);
-  res.json({ message: 'Pokémon supprimé avec succés' });
+  res.json({ message: 'Pokémon supprimé avec succès' });
 };
 
-module.exports = { getPokemons, getPokemonById, addPokemon, updatePokemon, deletePokemon };
+const getLastId = async (req, res) => {
+  try {
+    const [rows] = await connection.query('SELECT MAX(id) AS lastId FROM pokemon');
+    res.json({ lastId: rows[0].lastId || 0 });
+  } catch (error) {
+    console.error('Erreur lors de la récupération du dernier ID :', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+
+module.exports = { getPokemons, getPokemonById, addPokemon, updatePokemon, deletePokemon, getLastId };

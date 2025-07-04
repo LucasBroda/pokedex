@@ -1,0 +1,107 @@
+.container {
+  padding: 20px;
+  background-color: #d32f2f; /* Rouge vif pour le thème Pokédex */
+  font-family: 'Roboto', sans-serif;
+  color: #fff;
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 2px 2px 4px #000;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.card {
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 15px;
+  padding: 15px;
+  width: 220px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 2px solid #000;
+}
+
+.card h2 {
+  font-size: 1.5rem;
+  margin: 10px 0;
+  color: #000;
+}
+
+.card p {
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #333;
+}
+
+.card button {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #1976d2;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.card button:hover {
+  background-color: #1565c0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #1976d2;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #1565c0;
+}
+
+.pagination button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 16px;
+  color: #fff;
+}
