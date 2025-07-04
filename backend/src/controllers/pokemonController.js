@@ -38,7 +38,6 @@ const addPokemon = async (req, res) => {
     id,
     name_french,
     types,
-    egg_groups,
     abilities,
     hp,
     attack,
@@ -46,24 +45,19 @@ const addPokemon = async (req, res) => {
     sp_attack,
     sp_defense,
     speed,
-    species,
     description,
     height,
     weight,
-    gender,
     hires,
-    evolution_next,
-    evolution_condition,
   } = req.body;
 
   await connection.query(
-    `INSERT INTO pokemon (id, name_french, types, egg_groups, abilities, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, hires, evolution_next, evolution_condition)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO pokemon (id, name_french, types, abilities, hp, attack, defense, sp_attack, sp_defense, speed, description, height, weight, hires)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)`,
     [
       id,
       name_french,
       types,
-      egg_groups,
       abilities,
       hp,
       attack,
@@ -71,14 +65,10 @@ const addPokemon = async (req, res) => {
       sp_attack,
       sp_defense,
       speed,
-      species,
       description,
       height,
       weight,
-      gender,
       hires,
-      evolution_next,
-      evolution_condition,
     ]
   );
 
@@ -90,7 +80,6 @@ const updatePokemon = async (req, res) => {
   const {
     name_french,
     types,
-    egg_groups,
     abilities,
     hp,
     attack,
@@ -98,23 +87,18 @@ const updatePokemon = async (req, res) => {
     sp_attack,
     sp_defense,
     speed,
-    species,
     description,
     height,
     weight,
-    gender,
     hires,
-    evolution_next,
-    evolution_condition,
   } = req.body;
 
   await connection.query(
-    `UPDATE pokemon SET name_french = ?, types = ?, egg_groups = ?, abilities = ?, hp = ?, attack = ?, defense = ?, sp_attack = ?, sp_defense = ?, speed = ?, species = ?, description = ?, height = ?, weight = ?, gender = ?, hires = ?, evolution_next = ?, evolution_condition = ?
+    `UPDATE pokemon SET name_french = ?, types = ?, abilities = ?, hp = ?, attack = ?, defense = ?, sp_attack = ?, sp_defense = ?, speed = ?, description = ?, height = ?, weight = ?, hires = ?
     WHERE id = ?`,
     [
       name_french,
       types,
-      egg_groups,
       abilities,
       hp,
       attack,
@@ -122,14 +106,10 @@ const updatePokemon = async (req, res) => {
       sp_attack,
       sp_defense,
       speed,
-      species,
       description,
       height,
       weight,
-      gender,
       hires,
-      evolution_next,
-      evolution_condition,
       id,
     ]
   );

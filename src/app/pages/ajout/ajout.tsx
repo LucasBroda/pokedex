@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import styles from "./ajout.module.css";
 
 function Ajout() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Record<string, string>>({
     id: "",
     name_french: "",
+    types: "",
+    abilities: "",
     hp: "",
     attack: "",
     defense: "",
     sp_attack: "",
     sp_defense: "",
     speed: "",
-    species: "",
     description: "",
     height: "",
     weight: "",
-    gender: "",
     hires: "",
   });
 
@@ -26,6 +26,15 @@ function Ajout() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validation des champs numériques
+    const numericFields = ["hp", "attack", "defense", "sp_attack", "sp_defense", "speed"];
+    for (const field of numericFields) {
+      if (isNaN(Number(formData[field as keyof typeof formData]))) {
+        alert(`Le champ ${field} doit contenir un nombre valide.`);
+        return;
+      }
+    }
 
     try {
       // Récupérer le dernier ID de la base de données
@@ -52,17 +61,17 @@ function Ajout() {
         setFormData({
           id: "",
           name_french: "",
+          types: "",
+          abilities: "",
           hp: "",
           attack: "",
           defense: "",
           sp_attack: "",
           sp_defense: "",
           speed: "",
-          species: "",
           description: "",
           height: "",
           weight: "",
-          gender: "",
           hires: "",
         });
       } else {
@@ -87,7 +96,22 @@ function Ajout() {
           required
         />
         <input
-          type="number"
+          type="text"
+          name="types"
+          placeholder="Type(s)"
+          value={formData.types}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="abilities"
+          placeholder="Capacités (séparées par des virgules)"
+          value={formData.abilities}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
           name="hp"
           placeholder="HP"
           value={formData.hp}
@@ -95,7 +119,7 @@ function Ajout() {
           required
         />
         <input
-          type="number"
+          type="text"
           name="attack"
           placeholder="Attaque"
           value={formData.attack}
@@ -103,7 +127,7 @@ function Ajout() {
           required
         />
         <input
-          type="number"
+          type="text"
           name="defense"
           placeholder="Défense"
           value={formData.defense}
@@ -111,7 +135,7 @@ function Ajout() {
           required
         />
         <input
-          type="number"
+          type="text"
           name="sp_attack"
           placeholder="Attaque Spéciale"
           value={formData.sp_attack}
@@ -119,7 +143,7 @@ function Ajout() {
           required
         />
         <input
-          type="number"
+          type="text"
           name="sp_defense"
           placeholder="Défense Spéciale"
           value={formData.sp_defense}
@@ -127,18 +151,10 @@ function Ajout() {
           required
         />
         <input
-          type="number"
+          type="text"
           name="speed"
           placeholder="Vitesse"
           value={formData.speed}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="species"
-          placeholder="Espèce"
-          value={formData.species}
           onChange={handleChange}
           required
         />
@@ -162,14 +178,6 @@ function Ajout() {
           name="weight"
           placeholder="Poids"
           value={formData.weight}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="gender"
-          placeholder="Genre"
-          value={formData.gender}
           onChange={handleChange}
           required
         />
