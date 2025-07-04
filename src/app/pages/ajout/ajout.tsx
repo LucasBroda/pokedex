@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./ajout.module.css";
 
 function Ajout() {
-  const [formData, setFormData] = useState<Record<string, string>>({
+  const [formData, setFormData] = useState({
     id: "",
     name_french: "",
     types: "",
@@ -30,7 +30,7 @@ function Ajout() {
     // Validation des champs numériques
     const numericFields = ["hp", "attack", "defense", "sp_attack", "sp_defense", "speed"];
     for (const field of numericFields) {
-      if (isNaN(Number(formData[field as keyof typeof formData]))) {
+      if (isNaN(Number(formData[field]))) {
         alert(`Le champ ${field} doit contenir un nombre valide.`);
         return;
       }
@@ -48,7 +48,7 @@ function Ajout() {
       }
 
       // Ajout du Pokémon
-      const response = await fetch("http://localhost:3001/api/pokemons", {
+      const response = await fetch("http://localhost:3001/api/pokemons/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +72,7 @@ function Ajout() {
           description: "",
           height: "",
           weight: "",
-          hires: "",
+          hires: ""
         });
       } else {
         alert("Erreur lors de l'ajout du Pokémon.");
