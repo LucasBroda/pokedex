@@ -14,8 +14,13 @@
   "dependencies": {
     "@tanstack/react-query": "^5.80.2",
     "@tanstack/react-query-devtools": "^5.80.2",
+    "bootstrap": "^5.3.7",
+    "mysql2": "^3.14.1",
+    "next": "15.3.3",
     "path": "^0.12.7",
+    "psql": "^0.0.1",
     "react": "^19.1.0",
+    "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",
     "react-router": "^7.6.1",
     "url": "^0.11.4",
