@@ -1,5 +1,6 @@
 const mysql = require('mysql2/promise');
 const fs = require('fs');
+const { exec } = require('child_process');
 
 // Connection à la base de données MySQL
 const connection = mysql.createPool({
@@ -10,7 +11,7 @@ const connection = mysql.createPool({
 });
 
 async function insertPokemon(pokemon) {
-  const { id, name, type, base, description, profile, image} = pokemon;
+  const { id, name, type, base, description, profile, image } = pokemon;
 
   // Check si le Pokémon existe déjà
   const [existingPokemon] = await connection.query('SELECT id FROM pokemon WHERE id = ?', [id]);
@@ -25,7 +26,7 @@ async function insertPokemon(pokemon) {
   const abilities = profile?.ability
     ? profile.ability.map(([abilityName, isHidden]) => `${abilityName}${isHidden === 'true' ? '(hidden)' : ''}`).join(',')
     : null; // Convertir les capacités en chaîne séparée par des virgules
-  
+
   // Insertion du Pokémon dans la table pokemon
   await connection.query(
     `INSERT INTO pokemon (
@@ -62,6 +63,19 @@ async function importData() {
     }
 
     console.log('Importation des données terminée avec succès.');
+
+    // Appel à create_user.js après l'importation
+    exec('node create_user.js', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Erreur lors de l'exécution de create_user.js : ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        console.error(`Erreur : ${stderr}`);
+        return;
+      }
+      console.log(`create_user.js exécuté avec succès : ${stdout}`);
+    });
   } catch (err) {
     console.error('Erreur lors de l\'importation des données :', err);
   }
