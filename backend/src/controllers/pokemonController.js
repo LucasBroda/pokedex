@@ -1,7 +1,7 @@
 const connection = require('../bd/connexion');
 
 const getPokemons = async (req, res) => {
-  const { name, type } = req.query;
+  const { name, type} = req.query;
 
   let query = 'SELECT * FROM pokemon WHERE 1=1';
   const params = [];
@@ -18,7 +18,7 @@ const getPokemons = async (req, res) => {
 
   try {
     const [rows] = await connection.query(query, params);
-    res.json(rows);
+    res.json( rows );
   } catch (error) {
     console.error('Erreur lors de la récupération des Pokémon :', error);
     res.status(500).json({ message: 'Erreur serveur' });

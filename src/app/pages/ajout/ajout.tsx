@@ -50,6 +50,11 @@ function Ajout() {
         return;
       }
 
+      // Utiliser une image par défaut si le champ hires est vide
+      if (!formData.hires) {
+        formData.hires = "../../../../public/lapin.webp"; // Chemin de l'image par défaut
+      }
+
       // Ajout du Pokémon
       const response = await fetch("http://localhost:3001/api/pokemons/add", {
         method: "POST",
