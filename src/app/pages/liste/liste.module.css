@@ -1,8 +1,8 @@
 .container {
   padding: 20px;
-  background-color: #d32f2f; /* Rouge vif pour le thème Pokédex */
+  background-color: #f5f5f5; /* Couleur de fond */
   font-family: 'Roboto', sans-serif;
-  color: #fff;
+  color: #000;
   min-height: 100vh;
 }
 
@@ -11,8 +11,36 @@ h1 {
   font-size: 2.5rem;
   margin-bottom: 20px;
   text-transform: uppercase;
-  color: #fff;
-  text-shadow: 2px 2px 4px #000;
+  color: #000;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1976d2; /* Bleu vif */
+}
+
+select {
+  padding: 5px 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+select:hover {
+  border-color: #1976d2; /* Bleu vif au survol */
 }
 
 .cards {
@@ -24,7 +52,7 @@ h1 {
 
 .card {
   background-color: #fff;
-  border: 2px solid #000;
+  border: 2px solid #ddd;
   border-radius: 15px;
   padding: 15px;
   width: 220px;
@@ -42,7 +70,7 @@ h1 {
   width: 100%;
   height: auto;
   border-radius: 10px;
-  border: 2px solid #000;
+  border: 2px solid #ddd;
 }
 
 .card h2 {
@@ -55,53 +83,4 @@ h1 {
   font-size: 1rem;
   margin: 5px 0;
   color: #333;
-}
-
-.card button {
-  margin-top: 10px;
-  padding: 10px;
-  font-size: 14px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #1976d2;
-  color: #fff;
-  transition: background-color 0.3s ease;
-}
-
-.card button:hover {
-  background-color: #1565c0;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.pagination button {
-  padding: 10px;
-  font-size: 14px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #1976d2;
-  color: #fff;
-  transition: background-color 0.3s ease;
-}
-
-.pagination button:hover {
-  background-color: #1565c0;
-}
-
-.pagination button:disabled {
-  background-color: #ddd;
-  cursor: not-allowed;
-}
-
-.pagination span {
-  font-size: 16px;
-  color: #fff;
 }
