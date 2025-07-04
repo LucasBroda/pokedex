@@ -18,5 +18,5 @@ CREATE TABLE pokemon (
   description TEXT,
   height VARCHAR(50),
   weight VARCHAR(50),
-  hires VARCHAR(255),
+  hires VARCHAR(255)
 );
