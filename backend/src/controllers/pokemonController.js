@@ -13,7 +13,7 @@ const getPokemons = async (req, res) => {
   }
 
   if (type) {
-    query += ' AND id IN (SELECT pokemon_id FROM pokemon_type WHERE type_id IN (SELECT id FROM type WHERE name = ?))';
+    query += ' AND FIND_IN_SET(?, types)';
     params.push(type);
   }
 
@@ -34,12 +34,52 @@ const getPokemonById = async (req, res) => {
 };
 
 const addPokemon = async (req, res) => {
-  const { id, name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires } = req.body;
+  const {
+    id,
+    name_french,
+    types,
+    egg_groups,
+    abilities,
+    hp,
+    attack,
+    defense,
+    sp_attack,
+    sp_defense,
+    speed,
+    species,
+    description,
+    height,
+    weight,
+    gender,
+    hires,
+    evolution_next,
+    evolution_condition,
+  } = req.body;
 
   await connection.query(
-    `INSERT INTO pokemon (id, name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [id, name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires]
+    `INSERT INTO pokemon (id, name_french, types, egg_groups, abilities, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, hires, evolution_next, evolution_condition)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      id,
+      name_french,
+      types,
+      egg_groups,
+      abilities,
+      hp,
+      attack,
+      defense,
+      sp_attack,
+      sp_defense,
+      speed,
+      species,
+      description,
+      height,
+      weight,
+      gender,
+      hires,
+      evolution_next,
+      evolution_condition,
+    ]
   );
 
   res.status(201).json({ message: 'Pokémon bien ajouté' });
@@ -47,21 +87,60 @@ const addPokemon = async (req, res) => {
 
 const updatePokemon = async (req, res) => {
   const { id } = req.params;
-  const { name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires } = req.body;
+  const {
+    name_french,
+    types,
+    egg_groups,
+    abilities,
+    hp,
+    attack,
+    defense,
+    sp_attack,
+    sp_defense,
+    speed,
+    species,
+    description,
+    height,
+    weight,
+    gender,
+    hires,
+    evolution_next,
+    evolution_condition,
+  } = req.body;
 
   await connection.query(
-    `UPDATE pokemon SET name_french = ?, hp = ?, attack = ?, defense = ?, sp_attack = ?, sp_defense = ?, speed = ?, species = ?, description = ?, height = ?, weight = ?, gender = ?, sprite = ?, thumbnail = ?, hires = ?
+    `UPDATE pokemon SET name_french = ?, types = ?, egg_groups = ?, abilities = ?, hp = ?, attack = ?, defense = ?, sp_attack = ?, sp_defense = ?, speed = ?, species = ?, description = ?, height = ?, weight = ?, gender = ?, hires = ?, evolution_next = ?, evolution_condition = ?
     WHERE id = ?`,
-    [name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires, id]
+    [
+      name_french,
+      types,
+      egg_groups,
+      abilities,
+      hp,
+      attack,
+      defense,
+      sp_attack,
+      sp_defense,
+      speed,
+      species,
+      description,
+      height,
+      weight,
+      gender,
+      hires,
+      evolution_next,
+      evolution_condition,
+      id,
+    ]
   );
 
-  res.json({ message: 'Pokémon bien ajouté' });
+  res.json({ message: 'Pokémon mis à jour avec succès' });
 };
 
 const deletePokemon = async (req, res) => {
   const { id } = req.params;
   await connection.query('DELETE FROM pokemon WHERE id = ?', [id]);
-  res.json({ message: 'Pokémon supprimé avec succés' });
+  res.json({ message: 'Pokémon supprimé avec succès' });
 };
 
 module.exports = { getPokemons, getPokemonById, addPokemon, updatePokemon, deletePokemon };
