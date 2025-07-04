@@ -127,9 +127,14 @@ function PokemonModal({ pokemon, onClose, onUpdate, onDelete, onAddFavorite }: M
 function Liste() {
   const [pokemons, setPokemons] = useState<Array<Pokemon>>([]);
   const [filteredPokemons, setFilteredPokemons] = useState<Array<Pokemon>>([]);
+  const [favorites, setFavorites] = useState<Array<number>>(() => {
+    const storedFavorites = localStorage.getItem("favorites");
+    return storedFavorites ? JSON.parse(storedFavorites) : [];
+  });
   const [limit, setLimit] = useState(10);
   const [filterName, setFilterName] = useState("");
   const [filterType, setFilterType] = useState("");
+  const [filterFavorites, setFilterFavorites] = useState(false); // Nouveau filtre pour les favoris
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
 
   useEffect(() => {
@@ -138,7 +143,7 @@ function Liste() {
 
   useEffect(() => {
     applyFilters();
-  }, [limit, filterName, filterType, pokemons]);
+  }, [limit, filterName, filterType, filterFavorites, pokemons]);
 
   const fetchPokemons = async () => {
     try {
@@ -173,6 +178,10 @@ function Liste() {
       );
     }
 
+    if (filterFavorites) {
+      filtered = filtered.filter((pokemon) => favorites.includes(pokemon.id));
+    }
+
     setFilteredPokemons(filtered);
   };
 
@@ -184,6 +193,17 @@ function Liste() {
 
   const handleDelete = (pokemonId: number) => {
     setPokemons((prev) => prev.filter((p) => p.id !== pokemonId));
+  };
+
+  const handleAddFavorite = (pokemon: Pokemon) => {
+    if (!favorites.includes(pokemon.id)) {
+      const updatedFavorites = [...favorites, pokemon.id];
+      setFavorites(updatedFavorites);
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      alert(`${pokemon.name_french} ajouté aux favoris !`);
+    } else {
+      alert(`${pokemon.name_french} est déjà dans les favoris.`);
+    }
   };
 
   return (
@@ -214,6 +234,14 @@ function Liste() {
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
         />
+        <label>
+          <input
+            type="checkbox"
+            checked={filterFavorites}
+            onChange={(e) => setFilterFavorites(e.target.checked)}
+          />
+          Afficher uniquement les favoris
+        </label>
       </div>
       <div className={styles.cards}>
         {filteredPokemons.map((pokemon) => (
@@ -236,7 +264,7 @@ function Liste() {
           onClose={() => setSelectedPokemon(null)}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
-          onAddFavorite={(pokemon) => alert(`${pokemon.name_french} ajouté aux favoris !`)}
+          onAddFavorite={handleAddFavorite}
         />
       )}
     </div>
