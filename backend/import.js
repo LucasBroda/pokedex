@@ -1,7 +1,7 @@
 const mysql = require('mysql2/promise');
 const fs = require('fs');
 
-// Database connection
+// Connection à la base de données MySQL
 const connection = mysql.createPool({
   host: 'localhost',
   user: 'pokedex_user',
@@ -12,15 +12,15 @@ const connection = mysql.createPool({
 async function insertPokemon(pokemon) {
   const { id, name, base, species, description, profile, image } = pokemon;
 
-  // Check if the Pokémon already exists
+  // Check si le Pokémon existe déjà
   const [existingPokemon] = await connection.query('SELECT id FROM pokemon WHERE id = ?', [id]);
 
   if (existingPokemon.length > 0) {
-    console.log(`Pokémon with id ${id} already exists. Skipping insertion.`);
-    return; // Skip insertion if the Pokémon already exists
+    console.log(`Le Pokémon avec l'id ${id} existe déjà. Insertion ignorée.`);
+    return; // Skip l'insertion si le Pokémon existe déjà
   }
 
-  // Insert the Pokémon if it doesn't exist
+  // Insertion du Pokémon dans la table pokemon
   await connection.query(
     `INSERT INTO pokemon (
       id, name_english, name_japanese, name_chinese, name_french, hp, attack, defense, sp_attack, sp_defense, speed, species, description, height, weight, gender, sprite, thumbnail, hires
@@ -51,11 +51,11 @@ async function insertPokemon(pokemon) {
 
 async function insertTypes(pokemonId, types) {
   for (const t of types) {
-    // Check if the type already exists
+    // Check si le type existe déjà
     const [existingType] = await connection.query('SELECT id FROM type WHERE name = ?', [t]);
 
     if (existingType.length > 0) {
-      console.log(`Type "${t}" already exists. Skipping insertion.`);
+      console.log(`Type "${t}" existe déjà. Insertion ignorée.`);
     } else {
       await connection.query('INSERT INTO type (name) VALUES (?)', [t]);
     }
@@ -70,7 +70,7 @@ async function insertTypes(pokemonId, types) {
       );
 
       if (existingPokemonType.length > 0) {
-        console.log(`Relation between Pokémon ${pokemonId} and type "${t}" already exists. Skipping insertion.`);
+        console.log(`La relation entre le Pokémon ${pokemonId} et le "${t}" existe déjà. Insertion ignorée.`);
       } else {
         await connection.query('INSERT INTO pokemon_type (pokemon_id, type_id) VALUES (?, ?)', [pokemonId, typeId]);
       }
@@ -80,7 +80,7 @@ async function insertTypes(pokemonId, types) {
 
 async function insertEggGroups(pokemonId, eggGroups) {
   for (const eggType of eggGroups) {
-    // Check if the egg group already exists
+    // Check si le groupe d'œufs existe déjà
     const [existingEggGroup] = await connection.query('SELECT id FROM egg_group WHERE name = ?', [eggType]);
 
     if (existingEggGroup.length > 0) {
@@ -109,7 +109,7 @@ async function insertEggGroups(pokemonId, eggGroups) {
 
 async function insertAbilities(pokemonId, abilities) {
   for (const [abilityName, isHidden] of abilities) {
-    // Check if the ability already exists
+    // Check si la compétence existe déjà
     const [existingAbility] = await connection.query('SELECT id FROM ability WHERE name = ?', [abilityName]);
 
     if (existingAbility.length > 0) {
@@ -164,31 +164,31 @@ async function insertEvolutions(pokemonId, evolutions) {
 
 async function importData() {
   try {
-    // Load the JSON file
+    // Charge les données depuis le fichier JSON
     const data = JSON.parse(fs.readFileSync('./pokedex.json', 'utf8'));
 
     for (const pokemon of data) {
       const { id, name, type, base, species, description, profile, image } = pokemon;
 
-      // Insert Pokémon
+      // Insérer le Pokémon dans la table pokemon
       await insertPokemon({ id, name, base, species, description, profile, image });
 
-      // Insert Types
+      // INsérter les types
       if (type) {
         await insertTypes(id, type);
       }
 
-      // Insert Egg Groups
+      // Insérer les groupes d'œufs
       if (profile?.egg) {
         await insertEggGroups(id, profile.egg);
       }
 
-      // Insert Abilities
+      // Insérer les compétences
       if (profile?.ability) {
         await insertAbilities(id, profile.ability);
       }
 
-      // Insert Evolutions
+      // Insérer les évolutions
       if (pokemon?.evolution?.next) {
         await insertEvolutions(id, pokemon.evolution.next);
       }
@@ -200,5 +200,5 @@ async function importData() {
   }
 }
 
-// Call the importData function
+// Appel de la fonction d'importation
 importData().catch((err) => console.error(err));
