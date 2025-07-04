@@ -25,7 +25,7 @@ function Liste() {
 
   return (
     <div className={styles.container}>
-      <h1>Liste des Pokémon</h1>
+      <h1>Pokedex</h1>
       <div className={styles.cards}>
         {pokemons.map((pokemon) => (
           <div key={pokemon.id} className={styles.card}>
