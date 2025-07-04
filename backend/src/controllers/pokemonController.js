@@ -53,7 +53,7 @@ const addPokemon = async (req, res) => {
 
   await connection.query(
     `INSERT INTO pokemon (id, name_french, types, abilities, hp, attack, defense, sp_attack, sp_defense, speed, description, height, weight, hires)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)`,
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       id,
       name_french,
@@ -123,4 +123,14 @@ const deletePokemon = async (req, res) => {
   res.json({ message: 'Pokémon supprimé avec succès' });
 };
 
-module.exports = { getPokemons, getPokemonById, addPokemon, updatePokemon, deletePokemon };
+const getLastId = async (req, res) => {
+  try {
+    const [rows] = await connection.query('SELECT MAX(id) AS lastId FROM pokemon');
+    res.json({ lastId: rows[0].lastId || 0 });
+  } catch (error) {
+    console.error('Erreur lors de la récupération du dernier ID :', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+
+module.exports = { getPokemons, getPokemonById, addPokemon, updatePokemon, deletePokemon, getLastId };
